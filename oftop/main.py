@@ -136,7 +136,7 @@ def draw_screen(files):
         print("{pid:>5}{SEP}{user:>8}{SEP}{status:<6}{SEP}{file_size:>10}{SEP}{file_pos:>10}{SEP}{file_pos_percent:>5}%{SEP}{current_speed_human:>11}{SEP}{cmdline:<25}{SEP}{path}".format(SEP=SEP, **kwds))
         #print(f"{f['pid']:>5}{SEP}{f['username'][:8]:>8}{SEP}{STATUS[f['status']]:<6}{SEP}{f['file_size']:>10}{SEP}{f['file_pos']:>10}{SEP}{f['file_pos_percent']:>5}%{SEP}{f['current_speed_human']:>11}{SEP}{cmdline[:25]:<25}{SEP}{path}")
 
-def main():
+def oftop():
     files, timestamp = open_files_by_file({}, None)
     draw_screen(files)
     while True:
@@ -144,9 +144,11 @@ def main():
         files, timestamp = open_files_by_file(files, timestamp)
         draw_screen(files)
 
-if __name__ == '__main__':
+def main():
     try:
-        main()
+        oftop()
     except KeyboardInterrupt:
         pass
 
+if __name__ == '__main__':
+    main()
