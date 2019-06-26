@@ -5,7 +5,7 @@ with open('README.md', 'r') as fh:
 
 setuptools.setup(
     name='oftop',
-    version='0.1.0',
+    version='0.1.2',
     author='M. Schölling',
     author_email='manuel.schoelling@gmx.de',
     description='Open File Top',

@@ -4,6 +4,8 @@ import collections
 import time
 import os
 
+__version__ = '0.1.2'
+
 def open_files_by_procs(process_filter=None):
     attrs = ['pid', 'name', 'username', 'status', 'open_files', 'cmdline']
     proc_iter = psutil.process_iter(attrs=attrs)
@@ -35,22 +37,22 @@ STATUS = {
     'disk-sleep': 'D',
     'start_pending': 'P',
     'pause_pending': 'P',
-    'continue_pending': 'P', 
-    'stop_pending': 'P', 
+    'continue_pending': 'P',
+    'stop_pending': 'P',
     'stopped': 'T'
 }
 
 
 def human_speed(speed):
     if speed < 1024:
-        return f'{speed:5.1f} B/s'
+        return '{:5.1f} B/s'.format(speed)
     if speed < 1024 ** 2:
-        return f'{speed / 1024 ** 1:5.1f} KB/s'
+        return '{:5.1f} KB/s'.format(speed / 1024**1)
     if speed < 1024 ** 3:
-        return f'{speed / 1024 ** 2:5.1f} MB/s'
+        return '{:5.1f} MB/s'.format(speed / 1024**2)
     if speed < 1024 ** 4:
-        return f'{speed / 1024 ** 3:5.1f} GB/s'
-    return f'{speed / 1024 ** 4:5.1f} TB/s'
+        return '{:5.1f} GB/s'.format(speed / 1024**3)
+    return '{:5.1f} TB/s'.format(speed / 1024**4)
 
 
 def open_files_by_file(diff, diff_time):
@@ -119,15 +121,20 @@ def draw_screen(files):
     }))
 
     print('\033[2J')
-    print('oftop v0.1.0 (Ctrl+C to quit)')
+    print('oftop v{} (Ctrl+C to quit)'.format(__version__))
     print('')
 
     for i, (path, f) in enumerate(files):
         if i > N:
             break
 
-        cmdline = ' '.join(f['cmdline'])
-        print(f"{f['pid']:>5}{SEP}{f['username'][:8]:>8}{SEP}{STATUS[f['status']]:<6}{SEP}{f['file_pos']:>10}{SEP}{f['file_size']:>10}{SEP}{f['file_pos_percent']:>5}%{SEP}{f['current_speed_human']:>11}{SEP}{cmdline[:25]:<25}{SEP}{path}")
+        kwds = dict(f)
+        kwds['path'] = path
+        kwds['cmdline'] = ' '.join(f['cmdline'])[:25]
+        kwds['user'] = f['username'][:8]
+        kwds['status'] = STATUS[f['status']]
+        print("{pid:>5}{SEP}{user:>8}{SEP}{status:<6}{SEP}{file_size:>10}{SEP}{file_pos:>10}{SEP}{file_pos_percent:>5}%{SEP}{current_speed_human:>11}{SEP}{cmdline:<25}{SEP}{path}".format(SEP=SEP, **kwds))
+        #print(f"{f['pid']:>5}{SEP}{f['username'][:8]:>8}{SEP}{STATUS[f['status']]:<6}{SEP}{f['file_size']:>10}{SEP}{f['file_pos']:>10}{SEP}{f['file_pos_percent']:>5}%{SEP}{f['current_speed_human']:>11}{SEP}{cmdline[:25]:<25}{SEP}{path}")
 
 def main():
     files, timestamp = open_files_by_file({}, None)
