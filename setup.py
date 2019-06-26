@@ -5,7 +5,7 @@ with open('README.md', 'r') as fh:
 
 setuptools.setup(
     name='oftop',
-    version='0.1.2',
+    version='0.1.3',
     author='M. Schölling',
     author_email='manuel.schoelling@gmx.de',
     description='Open File Top',
@@ -22,5 +22,5 @@ setuptools.setup(
         'oftop=oftop:main',
       ],
     },
-    install_requires=['psutil'],
+    install_requires=['psutil', 'pathlib'],
 )

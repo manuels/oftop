@@ -4,7 +4,7 @@ import collections
 import time
 import os
 
-__version__ = '0.1.2'
+__version__ = '0.1.3'
 
 def open_files_by_procs(process_filter=None):
     attrs = ['pid', 'name', 'username', 'status', 'open_files', 'cmdline']
